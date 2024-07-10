@@ -1,0 +1,34 @@
+[raven]
+name=Raven's RPM repo for el$releasever-$basearch - base
+baseurl=https://pkgs.sysadmins.ws/el$releasever/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-modular]
+name=Raven's RPM repo for el$releasever-$basearch - modular packages
+baseurl=https://pkgs.sysadmins.ws/el$releasever/modular/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-multimedia]
+name=Raven's RPM repo for el$releasever-$basearch  - multimedia
+baseurl=https://pkgs.sysadmins.ws/el$releasever/multimedia/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-extras]
+name=Raven's RPM repo for el$releasever-$basearch - extras
+baseurl=https://pkgs.sysadmins.ws/el$releasever/extras/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-testing]
+name=Raven's RPM repo for el$releasever-$basearch - testing
+baseurl=https://pkgs.sysadmins.ws/el$releasever/testing/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
