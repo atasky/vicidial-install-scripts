@@ -3,8 +3,8 @@
 echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
-
-yum install make patch gcc perl-Term-ReadLine-Gnu gcc-c++ subversion kernel kernel-core kernel-modules php php-devel php-gd gd-devel php-mbstring php-mcrypt php-imap php-ldap php-mysql php-odbc php-pear php-xml php-xmlrpc curl curl-devel bzip2 perl-libwww-perl ImageMagick libxml2 libxml2-devel httpd libpcap openssl-devel libpcap-devel libnet ncurses ncurses-devel screen mysql-devel ntp mutt glibc.i686 wget nano unzip sipsak sox libss7* libopen* openssl libsrtp libsrtp-devel unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel libtermcap-devel newt-devel libtiff-devel libuuid-devel libxml2-devel libsqlite3x-devel libedit libedit-devel -y
+rpm -ivh https://pkgs.dyn.su/el9/base/x86_64/raven-release.el9.noarch.rpm
+yum install make patch gcc perl-Term-ReadLine-Gnu gcc-c++ subversion kernel kernel-core kernel-modules php56-php php56-php-devel php56-php-gd gd-devel php56-php-mbstring php56-php-mcrypt php56-php-imap php56-php-ldap php56-php-mysql php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel bzip2 perl-libwww-perl ImageMagick libxml2 libxml2-devel httpd libpcap openssl-devel libpcap-devel libnet ncurses ncurses-devel screen mysql-devel ntp mutt glibc.i686 wget nano unzip sox libss7* libopen* openssl libsrtp libsrtp-devel unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel libtermcap-devel newt-devel libtiff-devel libuuid-devel libxml2-devel libsqlite3x-devel libedit libedit-devel -y
 yum -y install sqlite-devel
 yum install mariadb-server mariadb -y
 
