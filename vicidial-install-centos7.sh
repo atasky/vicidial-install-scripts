@@ -1,14 +1,58 @@
 #!/bin/sh
+echo "RAVEN REPO KURULUMU VE AYARLAR YAPILANDIRILIYOR.."
+
+rpm -ivh https://pkgs.dyn.su/el9/base/x86_64/raven-release.el9.noarch.rpm
+rm -rf /etc/yum.repos.d/raven.repo
+echo "" > /etc/yum.repos.d/raven.repo
+
+cat <<RAVENCONF>> /etc/yum.repos.d/raven.repo
+[raven]
+name=Raven's RPM repo for el$releasever-$basearch - base
+baseurl=https://pkgs.sysadmins.ws/el$releasever/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-modular]
+name=Raven's RPM repo for el$releasever-$basearch - modular packages
+baseurl=https://pkgs.sysadmins.ws/el$releasever/modular/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-multimedia]
+name=Raven's RPM repo for el$releasever-$basearch  - multimedia
+baseurl=https://pkgs.sysadmins.ws/el$releasever/multimedia/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-extras]
+name=Raven's RPM repo for el$releasever-$basearch - extras
+baseurl=https://pkgs.sysadmins.ws/el$releasever/extras/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+[raven-testing]
+name=Raven's RPM repo for el$releasever-$basearch - testing
+baseurl=https://pkgs.sysadmins.ws/el$releasever/testing/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
+gpgcheck=1
+enabled=1
+
+RAVENCONF
+
 
 echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
-rpm -ivh https://pkgs.dyn.su/el9/base/x86_64/raven-release.el9.noarch.rpm
 yum install make patch gcc perl-Term-ReadLine-Gnu gcc-c++ subversion kernel kernel-core kernel-modules php56-php php56-php-devel php56-php-gd gd-devel php56-php-mbstring php56-php-mcrypt php56-php-imap php56-php-ldap php56-php-mysql php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel bzip2 perl-libwww-perl ImageMagick libxml2 libxml2-devel httpd libpcap openssl-devel libpcap-devel libnet ncurses ncurses-devel screen mysql-devel ntp mutt glibc.i686 wget nano unzip sox libss7* libopen* openssl libsrtp libsrtp-devel unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel libtermcap-devel newt-devel libtiff-devel libuuid-devel libxml2-devel libsqlite3x-devel libedit libedit-devel -y
 yum -y install sqlite-devel
 yum install mariadb-server mariadb -y
 
 cp /etc/my.cnf /etc/my.cnf.original
+
 
 echo "" > /etc/my.cnf
 
