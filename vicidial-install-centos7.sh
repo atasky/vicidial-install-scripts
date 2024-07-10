@@ -3,46 +3,7 @@ echo "RAVEN REPO KURULUMU VE AYARLAR YAPILANDIRILIYOR.."
 
 rpm -ivh https://pkgs.dyn.su/el9/base/x86_64/raven-release.el9.noarch.rpm
 rm -rf /etc/yum.repos.d/raven.repo
-echo "" > /etc/yum.repos.d/raven.repo
-
-cat <<RAVENCONF>> /etc/yum.repos.d/raven.repo
-[raven]
-name=Raven's RPM repo for el$releasever-$basearch - base
-baseurl=https://pkgs.sysadmins.ws/el$releasever/base/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
-gpgcheck=1
-enabled=1
-
-[raven-modular]
-name=Raven's RPM repo for el$releasever-$basearch - modular packages
-baseurl=https://pkgs.sysadmins.ws/el$releasever/modular/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
-gpgcheck=1
-enabled=1
-
-[raven-multimedia]
-name=Raven's RPM repo for el$releasever-$basearch  - multimedia
-baseurl=https://pkgs.sysadmins.ws/el$releasever/multimedia/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
-gpgcheck=1
-enabled=1
-
-[raven-extras]
-name=Raven's RPM repo for el$releasever-$basearch - extras
-baseurl=https://pkgs.sysadmins.ws/el$releasever/extras/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
-gpgcheck=1
-enabled=1
-
-[raven-testing]
-name=Raven's RPM repo for el$releasever-$basearch - testing
-baseurl=https://pkgs.sysadmins.ws/el$releasever/testing/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-raven
-gpgcheck=1
-enabled=1
-
-RAVENCONF
-
+mv raven.repo /etc/yum.repos.d/raven.repo
 
 echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
