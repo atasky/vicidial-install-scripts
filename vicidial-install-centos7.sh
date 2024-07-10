@@ -4,7 +4,7 @@ echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
 
-yum install make patch gcc perl-Term-ReadLine-Gnu gcc-c++ subversion php php-devel php-gd gd-devel php-mbstring php-mcrypt php-imap php-ldap php-mysql php-odbc php-pear php-xml php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel httpd libpcap libpcap-devel libnet ncurses ncurses-devel screen mysql-devel ntp mutt glibc.i686 wget nano unzip sipsak sox libss7* libopen* openssl libsrtp libsrtp-devel unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel libtermcap-devel -y
+yum install make patch gcc perl-Term-ReadLine-Gnu gcc-c++ subversion kernel kernel-core kernel-modules php php-devel php-gd gd-devel php-mbstring php-mcrypt php-imap php-ldap php-mysql php-odbc php-pear php-xml php-xmlrpc curl curl-devel bzip2 perl-libwww-perl ImageMagick libxml2 libxml2-devel httpd libpcap openssl-devel libpcap-devel libnet ncurses ncurses-devel screen mysql-devel ntp mutt glibc.i686 wget nano unzip sipsak sox libss7* libopen* openssl libsrtp libsrtp-devel unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel libtermcap-devel libuuid-devel libxml2-devel libsqlite3x-devel libedit-devel -y
 yum -y install sqlite-devel
 yum install mariadb-server mariadb -y
 
@@ -267,9 +267,9 @@ cd /usr/src/asterisk/asterisk*
 make menuselect/menuselect menuselect-tree menuselect.makeopts
 #enable app_meetme
 menuselect/menuselect --enable app_meetme menuselect.makeopts
-#enable res_http_websocket
+enable res_http_websocket
 menuselect/menuselect --enable res_http_websocket menuselect.makeopts
-#enable res_srtp
+enable res_srtp
 menuselect/menuselect --enable res_srtp menuselect.makeopts
 make -j ${JOBS} all
 make install
@@ -304,7 +304,7 @@ flush privileges;
 use asterisk;
 \. /usr/src/astguiclient/trunk/extras/MySQL_AST_CREATE_tables.sql
 \. /usr/src/astguiclient/trunk/extras/first_server_install.sql
-update servers set asterisk_version='13.29.2';
+update servers set asterisk_version='16.30.1';
 quit
 MYSQLCREOF
 
