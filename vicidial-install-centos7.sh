@@ -1,9 +1,9 @@
 #!/bin/sh
 echo "RAVEN REPO KURULUMU VE AYARLAR YAPILANDIRILIYOR.."
 
-rpm -ivh https://pkgs.dyn.su/el9/base/x86_64/raven-release.el9.noarch.rpm
-rm -rf /etc/yum.repos.d/raven.repo
-mv raven.repo /etc/yum.repos.d/raven.repo
+#rpm -ivh https://pkgs.dyn.su/el9/base/x86_64/raven-release.el9.noarch.rpm
+#rm -rf /etc/yum.repos.d/raven.repo
+#mv raven.repo /etc/yum.repos.d/raven.repo
 
 echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
