@@ -173,7 +173,7 @@ cpanm Text::CSV_XS
 
 #Install Asterisk Perl 
 cd /usr/src
-wget http://download.vicidial.com/required-apps/asterisk-perl-0.08.tar.gz
+wget http://download.vicidial.com/required-apps/asterisk-perl-0.08.tar.gz --no-check-certificate
 tar xzf asterisk-perl-0.08.tar.gz
 cd asterisk-perl-0.08
 perl Makefile.PL
@@ -183,7 +183,7 @@ make install
 #Install SIPSack
 
 cd /usr/src
-wget http://download.vicidial.com/required-apps/sipsak-0.9.6-1.tar.gz
+wget http://download.vicidial.com/required-apps/sipsak-0.9.6-1.tar.gz --no-check-certificate
 tar -zxf sipsak-0.9.6-1.tar.gz
 cd sipsak-0.9.6
 ./configure
@@ -194,7 +194,7 @@ make install
 
 #Install Lame
 cd /usr/src
-wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz --no-check-certificate
 tar -zxf lame-3.99.5.tar.gz
 cd lame-3.99.5
 ./configure
@@ -203,7 +203,7 @@ make install
 
 #Install Jansson
 cd /usr/src/
-wget http://www.digip.org/jansson/releases/jansson-2.5.tar.gz
+wget http://www.digip.org/jansson/releases/jansson-2.5.tar.gz --no-check-certificate
 tar -zxf jansson-2.5.tar.gz
 #tar xvzf jasson*
 cd jansson*
@@ -214,7 +214,7 @@ make install
 ldconfig
 
 cd /usr/src
-wget https://github.com/eaccelerator/eaccelerator/zipball/master -O eaccelerator.zip
+wget https://github.com/eaccelerator/eaccelerator/zipball/master -O eaccelerator.zip --no-check-certificate
 unzip eaccelerator.zip
 cd eaccelerator-*
 export PHP_PREFIX="/usr"
@@ -226,22 +226,23 @@ make install
 #Change PHP config
 
 echo "Download the PHP ini file from Git"
-wget -O /etc/php.ini https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/php.ini
+wget -O /etc/php.ini https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/php.ini --no-check-certificate
 
 mkdir /tmp/eaccelerator
 chmod 0777 /tmp/eaccelerator
 php -v
 
 echo "Donwload httpd.cof file from git"
-wget -O /etc/httpd/conf/httpd.conf https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/httpd.conf
+wget -O /etc/httpd/conf/httpd.conf https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/httpd.conf --no-check-certificate
 
 
 #Install Dahdi
 echo "Install Dahdi"
 yum install dahdi-* -y
-wget http://download.vicidial.com/beta-apps/dahdi-linux-complete-2.11.1.tar.gz
-tar xzf dahdi-linux-complete-2.11.1.tar.gz
-cd dahdi-linux-complete-2.11.1+2.11.1
+#wget http://download.vicidial.com/beta-apps/dahdi-linux-complete-2.11.1.tar.gz --no-check-certificate
+wget downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz --no-check-certificate
+tar xzf dahdi-linux-complete-current.tar.gz
+cd dahdi-linux-complete-3*
 make all
 make install
 modprobe dahdi
@@ -257,8 +258,8 @@ echo 'Continuing...'
 #Install Asterisk and LibPRI
 mkdir /usr/src/asterisk
 cd /usr/src/asterisk
-wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-1-current.tar.gz
-wget http://download.vicidial.com/required-apps/asterisk-16.30.1-vici.tar.gz
+wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-1-current.tar.gz --no-check-certificate
+wget http://download.vicidial.com/required-apps/asterisk-16.30.1-vici.tar.gz --no-check-certificate
 
 
 tar -xvzf asterisk-*
@@ -319,7 +320,7 @@ echo 'Continuing...'
 
 #Get astguiclient.conf file
 echo "" > /etc/astguiclient.conf
-wget -O /etc/astguiclient.conf https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/astguiclient.conf
+wget -O /etc/astguiclient.conf https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/astguiclient.conf --no-check-certificate
 echo "Replace IP address in Default"
 echo "%%%%%%%%%Please Enter This Server IP ADD%%%%%%%%%%%%"
 read serveripadd
@@ -338,13 +339,13 @@ echo "Replace OLD IP. You need to Enter your Current IP here"
 /usr/share/astguiclient/ADMIN_update_server_ip.pl --old-server_ip=10.10.10.15
 
 #Install Crontab
-wget -O /root/crontab-file https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/crontab
+wget -O /root/crontab-file https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/crontab --no-check-certificate
 crontab /root/crontab-file
 crontab -l
 
 #Install rc.local
 > /etc/rc.d/rc.local
-wget -O /etc/rc.d/rc.local https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/rc.local
+wget -O /etc/rc.d/rc.local https://raw.githubusercontent.com/jaganthoutam/vicidial-install-scripts/main/rc.local --no-check-certificate
 chmod +x /etc/rc.d/rc.local
 systemctl enable rc-local
 systemctl start rc-local
