@@ -7,7 +7,7 @@ export LC_ALL=C
 
 yum groupinstall "Development Tools" -y
 
-#yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 yum -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 yum -y install yum-utils
 #dnf module enable php:remi-5.6 -y
