@@ -302,7 +302,7 @@ wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
 tar -zxf lame-3.99.5.tar.gz
 cd lame-3.99.5
 ./configure
-make
+make -j`nproc`
 make install
 
 
@@ -313,7 +313,7 @@ tar xvzf jansson*
 cd jansson-2.13
 ./configure
 make clean
-make
+make -j`nproc`
 make install 
 ldconfig
 
@@ -327,8 +327,7 @@ cd /usr/src/dahdi-linux-complete-3.2.0+3.2.0
 sudo sed -i 's|(netdev, \&wc->napi, \&wctc4xxp_poll, 64);|(netdev, \&wc->napi, \&wctc4xxp_poll);|g' /usr/src/dahdi-linux-complete-3.2.0+3.2.0/linux/drivers/dahdi/wctc4xxp/base.c
 sudo sed -i 's|<linux/pci-aspm.h>|<linux/pci.h>|g' /usr/src/dahdi-linux-complete-3.2.0+3.2.0/linux/include/dahdi/kernel.h
 
-
-make
+make -j`nproc`
 make install
 make install-config
 
@@ -336,7 +335,7 @@ yum -y install dahdi-tools-libs --skip-broken
 
 cd tools
 make clean
-make
+make -j`nproc`
 make install
 make install-config
 
@@ -361,19 +360,13 @@ tar -xvzf libpri*
 
 cd /usr/src/asterisk/asterisk-13.29.2
 
-: ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
-./configure --libdir=/usr/lib64 --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
-
-make menuselect/menuselect menuselect-tree menuselect.makeopts
-#enable app_meetme
-menuselect/menuselect --enable app_meetme menuselect.makeopts
-#enable res_http_websocket
-menuselect/menuselect --enable res_http_websocket menuselect.makeopts
-#enable res_srtp
-menuselect/menuselect --enable res_srtp menuselect.makeopts
-make -j ${JOBS} all
+./configure --libdir=/usr/lib64 --with-pjproject-bundled -with-jansson-bundled --enable-asteriskssl --enable-opus --enable-srtp --with-ssl
+make clean
+make menuselect    ; ####### select chan_meetme 
+make -j`nproc`
 make install
 make samples
+make config
 
 read -p 'Press Enter to continue: '
 
