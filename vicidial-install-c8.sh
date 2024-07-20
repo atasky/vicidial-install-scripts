@@ -360,13 +360,18 @@ tar -xvzf libpri*
 
 cd /usr/src/asterisk/asterisk-13.29.2
 
-./configure --libdir=/usr/lib64 --with-pjproject-bundled -with-jansson-bundled --enable-asteriskssl --enable-opus --enable-srtp --with-ssl
-make clean
-make menuselect    ; ####### select chan_meetme 
-make -j`nproc`
+./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
+
+make menuselect/menuselect menuselect-tree menuselect.makeopts
+#enable app_meetme
+menuselect/menuselect --enable app_meetme menuselect.makeopts
+#enable res_http_websocket
+menuselect/menuselect --enable res_http_websocket menuselect.makeopts
+#enable res_srtp
+menuselect/menuselect --enable res_srtp menuselect.makeopts
+make -j ${JOBS} all
 make install
 make samples
-make config
 
 read -p 'Press Enter to continue: '
 
