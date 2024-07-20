@@ -7,16 +7,16 @@ export LC_ALL=C
 
 yum groupinstall "Development Tools" -y
 
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+#yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 yum -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 yum -y install yum-utils
-dnf module enable php:remi-5.6 -y
+#dnf module enable php:remi-5.6 -y
 dnf module enable mariadb:10.5 -y
 
 dnf -y install dnf-plugins-core
 dnf config-manager --set-enabled powertools
 
-yum install -y php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo php-opcache wget unzip make patch gcc gcc-c++ subversion php php-devel php-gd gd-devel readline-devel php-mbstring php-mcrypt php-imap php-ldap php-mysql php-odbc php-pear php-xml php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel httpd libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel libxml2-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which php-opcache libss7 mariadb-devel libss7* libopen* 
+yum install -y php56 php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch gcc gcc-c++ subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel httpd libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen*
 yum -y install sqlite-devel
 
 
@@ -52,9 +52,6 @@ systemctl restart httpd
 
 
 dnf install -y mariadb-server mariadb
-
-dnf -y install dnf-plugins-core
-dnf config-manager --set-enabled powertools
 
 
 systemctl enable mariadb
@@ -360,7 +357,7 @@ wget http://download.vicidial.com/required-apps/asterisk-13.29.2-vici.tar.gz
 tar -xvzf asterisk-*
 tar -xvzf libpri*
 
-cd /usr/src/asterisk/asterisk-13.29.2-vici
+cd /usr/src/asterisk/asterisk-13.29.2
 
 : ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
 ./configure --libdir=/usr/lib64 --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
@@ -638,7 +635,7 @@ systemctl restart mariadb.service
 
 ### start up the apache web server
 
-systemctl restart apache2
+systemctl restart httpd
 
 
 ### roll the Asterisk logs upon reboot
