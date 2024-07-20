@@ -39,12 +39,12 @@ EOF
 tee -a /etc/php.ini <<EOF
 
 error_reporting  =  E_ALL & ~E_NOTICE
-memory_limit = 448M
+memory_limit = 1024M
 short_open_tag = On
 max_execution_time = 3330
 max_input_time = 3360
-post_max_size = 448M
-upload_max_filesize = 442M
+post_max_size = 5000M
+upload_max_filesize = 4420M
 default_socket_timeout = 3360
 date.timezone = America/New_York
 EOF
