@@ -634,12 +634,11 @@ tee -a /etc/rc.d/rc.local <<EOF
 
 ### start up the MySQL server
 
-systemctl start mariadb.service
-
+systemctl restart mariadb.service
 
 ### start up the apache web server
 
-systemctl start httpd.service
+systemctl restart apache2
 
 
 ### roll the Asterisk logs upon reboot
@@ -764,11 +763,6 @@ sox ../mohmp3/manolo_camp-morning_coffee.wav manolo_camp-morning_coffee.wav vol 
 sox ../mohmp3/manolo_camp-morning_coffee.gsm manolo_camp-morning_coffee.gsm vol 0.25
 sox -t ul -r 8000 -c 1 ../mohmp3/manolo_camp-morning_coffee.ulaw -t ul manolo_camp-morning_coffee.ulaw vol 0.25
 
-
-cat <<WELCOME>> /var/www/html/index.html
-<META HTTP-EQUIV=REFRESH CONTENT="1; URL=/vicidial/welcome.php">
-Please Hold while I redirect you!
-WELCOME
 
 chmod 777 /var/spool/asterisk/monitorDONE
 chkconfig asterisk off
