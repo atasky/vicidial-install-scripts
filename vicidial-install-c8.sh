@@ -359,16 +359,61 @@ tar -xvzf asterisk-*
 tar -xvzf libpri*
 
 cd /usr/src/asterisk/asterisk-13.29.2
+./contrib/scripts/install_prereq install
 
-./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
+./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-pjproject-bundled --with-jansson-bundled --with-ssl --enable-asteriskssl
 
 make menuselect/menuselect menuselect-tree menuselect.makeopts
-#enable app_meetme
+menuselect/menuselect --disable astcanary menuselect.makeopts
 menuselect/menuselect --enable app_meetme menuselect.makeopts
-#enable res_http_websocket
 menuselect/menuselect --enable res_http_websocket menuselect.makeopts
-#enable res_srtp
 menuselect/menuselect --enable res_srtp menuselect.makeopts
+menuselect/menuselect --enable format_mp3 menuselect.makeopts
+menuselect/menuselect --enable app_mysql menuselect.makeopts
+menuselect/menuselect --enable cdr_mysql menuselect.makeopts
+menuselect/menuselect --enable app_skel menuselect.makeopts
+menuselect/menuselect --enable app_verbose menuselect.makeopts
+menuselect/menuselect --enable chan_pjsip menuselect.makeopts
+menuselect/menuselect --enable chan_rtp  menuselect.makeopts
+menuselect/menuselect --enable codec_g722 menuselect.makeopts
+menuselect/menuselect --enable codec_g726 menuselect.makeopts
+menuselect/menuselect --enable res_chan_stats menuselect.makeopts
+menuselect/menuselect --enable chan_multicast_rtp menuselect.makeopts
+menuselect/menuselect --enable res_config_mysql menuselect.makeopts
+menuselect/menuselect --enable G711_NEW_ALGORITHM menuselect.makeopts
+menuselect/menuselect --enable ADDRESS_SANITIZER menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN-WAV menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN-ULAW menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN-ALAW menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN-G729 menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN-G722 menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN_GB-WAV menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN_GB-ULAW menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN_GB-ALAW menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN_GB-GSM menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN_GB-G729 menuselect.makeopts
+menuselect/menuselect --enable CORE-SOUNDS-EN_GB-G722 menuselect.makeopts
+
+
+menuselect/menuselect --enable MOH-OPSOUND-ULAW menuselect.makeopts
+menuselect/menuselect --enable MOH-OPSOUND-ALAW menuselect.makeopts
+menuselect/menuselect --enable MOH-OPSOUND-GSM menuselect.makeopts
+menuselect/menuselect --enable MOH-OPSOUND-G729 menuselect.makeopts
+menuselect/menuselect --enable MOH-OPSOUND-G722 menuselect.makeopts
+
+menuselect/menuselect --disable astman menuselect.makeopts
+
+menuselect/menuselect --disable muted menuselect.makeopts
+
+menuselect/menuselect --disable stereorize menuselect.makeopts
+
+menuselect/menuselect --disable aelparse menuselect.makeopts
+
+menuselect/menuselect --disable astdb2sqlite3 menuselect.makeopts
+menuselect/menuselect --disable astdb2bdb menuselect.makeopts
+menuselect/menuselect --disable conf2ael menuselect.makeopts
+
+
 make -j ${JOBS} all
 make install
 make samples
