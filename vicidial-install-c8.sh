@@ -4,21 +4,20 @@ echo "Vicidial installation CentOS 8 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
 
-
-yum groupinstall "Development Tools" -y
-
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm --skip-broken
 yum -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm --skip-broken
 yum -y install yum-utils --skip-broken
+
+yum groupinstall "Development Tools" -y --allowerasing --nobest
 #dnf module enable php:remi-5.6 -y
 dnf module enable mariadb:10.5 -y
 
 dnf -y install dnf-plugins-core --skip-broken
 dnf config-manager --set-enabled powertools
 
-yum -y install gcc gcc-c++ --allowerasing
-yum -y install httpd httpd-devel httpd-tools
-yum install -y php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen*
+yum -y install gcc gcc-c++ --allowerasing --nobest
+yum -y install httpd httpd-devel httpd-tools --allowerasing --nobest
+yum install -y php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* --allowerasing --nobest
 yum -y install sqlite-devel --skip-broken
 
 
@@ -221,12 +220,12 @@ cpanm Text::CSV_XS
 #Run CPAN again to be sure all installed
 cpan -i Tk String::CRC Tk::TableMatrix Net::Address::IP::Local Term::ReadLine::Gnu XML::Twig Digest::Perl::MD5 Spreadsheet::Read Net::Address::IPv4::Local RPM::Specfile Spreadsheet::XLSX Spreadsheet::ReadSXC MD5 Digest::MD5 Digest::SHA1 Bundle::CPAN Pod::Usage Getopt::Long DBI DBD::mysql Net::Telnet Time::HiRes Net::Server Mail::Sendmail Unicode::Map Jcode Spreadsheet::WriteExcel OLE::Storage_Lite Proc::ProcessTable IO::Scalar Scalar::Util Spreadsheet::ParseExcel Archive::Zip Compress::Raw::Zlib Spreadsheet::XLSX Test::Tester Spreadsheet::ReadSXC Text::CSV Test::NoWarnings Text::CSV_PP File::Temp Text::CSV_XS Spreadsheet::Read LWP::UserAgent HTML::Entities HTML::Strip HTML::FormatText HTML::TreeBuilder Switch Time::Local Mail::POP3Client Mail::IMAPClient Mail::Message IO::Socket::SSL readline
 
-yum install perl-CPAN -y
-yum install perl-YAML -y
-yum install perl-libwww-perl -y
-yum install perl-DBI -y
-yum install perl-DBD-MySQL -y
-yum install perl-GD -y
+yum install perl-CPAN -y --allowerasing --nobest
+yum install perl-YAML -y --allowerasing --nobest
+yum install perl-libwww-perl -y --allowerasing --nobest
+yum install perl-DBI -y --allowerasing --nobest
+yum install perl-DBD-MySQL -y --allowerasing --nobest
+yum install perl-GD -y --allowerasing --nobest
 cd /usr/bin/
 curl -LOk http://xrl.us/cpanm
 chmod +x cpanm
@@ -293,7 +292,7 @@ make all
 make install 
 
 dnf --enablerepo=powertools install libsrtp-devel -y
-yum install -y elfutils-libelf-devel libedit-devel
+yum install -y elfutils-libelf-devel libedit-devel --allowerasing --nobest
 
 
 #Install Lame
@@ -331,7 +330,7 @@ make -j`nproc`
 make install
 make install-config
 
-yum -y install dahdi-tools-libs --skip-broken
+yum -y install dahdi-tools-libs --allowerasing --nobest
 
 cd tools
 make clean
@@ -454,7 +453,7 @@ update servers set asterisk_version='13.29.2';
 quit
 MYSQLCREOF
 
-read -p 'Press Enter to continue: '
+read -p 'Asterisk Kuruldu, Hazırmısın?: '
 
 echo 'Continuing...'
 
