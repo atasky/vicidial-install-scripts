@@ -1,20 +1,19 @@
 #!/bin/sh
 
-echo "Vicidial installation CentOS 7 with WebPhone(WebRTC/SIP.js)"
+echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
 
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-yum -y install yum-utils --skip-broken
+yum groupinstall "Development Tools" -y
 
-yum groupinstall "Development Tools" -y --allowerasing --nobest
-
-
+#yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+#yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum -y install yum-utils
+#yum-config-manager --enable remi-php74
 yum -y install gcc gcc-c++ --allowerasing --nobest
 yum -y install httpd httpd-devel httpd-tools --allowerasing --nobest
 yum install -y php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* --allowerasing --nobest
-yum -y install sqlite-devel --skip-broken
+yum -y install sqlite-devel
 
 
 tee -a /etc/httpd/conf/httpd.conf <<EOF
@@ -34,12 +33,12 @@ EOF
 tee -a /etc/php.ini <<EOF
 
 error_reporting  =  E_ALL & ~E_NOTICE
-memory_limit = 1024M
+memory_limit = 448M
 short_open_tag = On
 max_execution_time = 3330
 max_input_time = 3360
-post_max_size = 5000M
-upload_max_filesize = 4420M
+post_max_size = 448M
+upload_max_filesize = 442M
 default_socket_timeout = 3360
 date.timezone = America/New_York
 EOF
@@ -48,12 +47,19 @@ EOF
 systemctl restart httpd
 
 
-dnf install -y mariadb-server mariadb --skip-broken
+cat <<MARIADB>> /etc/yum.repos.d/MariaDB.repo
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.5/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+MARIADB
 
 
-systemctl enable mariadb
+yum install mariadb-server mariadb -y
 
 cp /etc/my.cnf /etc/my.cnf.original
+
 echo "" > /etc/my.cnf
 
 
@@ -73,10 +79,11 @@ socket = /var/lib/mysql/mysql.sock
 user = mysql
 old_passwords = 0
 ft_min_word_len = 3
-max_connections = 800
+max_connections = 2000
 max_allowed_packet = 32M
 skip-external-locking
 sql_mode="NO_ENGINE_SUBSTITUTION"
+skip-name-resolve
 
 log-error = /var/log/mysqld/mysqld.log
 
@@ -133,10 +140,11 @@ interactive-timeout
 MYSQLCONF
 
 mkdir /var/log/mysqld
+mv /var/log/mysqld.log /var/log/mysqld/mysqld.log
 touch /var/log/mysqld/slow-queries.log
 chown -R mysql:mysql /var/log/mysqld
-systemctl restart mariadb
 
+#Enable and Start httpd and MariaDb
 systemctl enable httpd.service
 systemctl enable mariadb.service
 systemctl restart httpd.service
@@ -146,18 +154,21 @@ systemctl restart mariadb.service
 
 echo "Install Perl"
 
-yum install -y perl-CPAN perl-YAML perl-CPAN-DistnameInfo perl-libwww-perl perl-DBI perl-DBD-MySQL perl-GD perl-Env perl-Term-ReadLine-Gnu perl-SelfLoader perl-open.noarch --skip-broken
-
-cpan -i Tk String::CRC Tk::TableMatrix Net::Address::IP::Local Term::ReadLine::Gnu XML::Twig Digest::Perl::MD5 Spreadsheet::Read Net::Address::IPv4::Local RPM::Specfile Spreadsheet::XLSX Spreadsheet::ReadSXC MD5 Digest::MD5 Digest::SHA1 Bundle::CPAN Pod::Usage Getopt::Long DBI DBD::mysql Net::Telnet Time::HiRes Net::Server Mail::Sendmail Unicode::Map Jcode Spreadsheet::WriteExcel OLE::Storage_Lite Proc::ProcessTable IO::Scalar Scalar::Util Spreadsheet::ParseExcel Archive::Zip Compress::Raw::Zlib Spreadsheet::XLSX Test::Tester Spreadsheet::ReadSXC Text::CSV Test::NoWarnings Text::CSV_PP File::Temp Text::CSV_XS Spreadsheet::Read LWP::UserAgent HTML::Entities HTML::Strip HTML::FormatText HTML::TreeBuilder Switch Time::Local Mail::POP3Client Mail::IMAPClient Mail::Message IO::Socket::SSL readline
+yum install perl-CPAN -y
+yum install perl-YAML -y
+yum install perl-libwww-perl -y
+yum install perl-DBI -y
+yum install perl-DBD-MySQL -y
+yum install perl-GD -y
 
 echo "Please Press ENTER for CPAN Install"
 
-yum install perl-CPAN -y --skip-broken
-yum install perl-YAML -y --skip-broken
-yum install perl-libwww-perl -y --skip-broken
-yum install perl-DBI -y --skip-broken
-yum install perl-DBD-MySQL -y --skip-broken
-yum install perl-GD -y --skip-broken
+yum install perl-CPAN -y
+yum install perl-YAML -y
+yum install perl-libwww-perl -y
+yum install perl-DBI -y
+yum install perl-DBD-MySQL -y
+yum install perl-GD -y
 cd /usr/bin/
 curl -LOk http://xrl.us/cpanm
 chmod +x cpanm
@@ -170,12 +181,9 @@ cpanm MD5
 cpanm Digest::MD5
 cpanm Digest::SHA1
 cpanm readline --force
-
-
 cpanm Bundle::CPAN
 cpanm DBI
 cpanm -f DBD::mysql
-cpanm XML::Twig
 cpanm Net::Telnet
 cpanm Time::HiRes
 cpanm Net::Server
@@ -213,7 +221,8 @@ cpanm Crypt::RC4
 cpanm Text::CSV
 cpanm Text::CSV_XS
 
-#Install Asterisk Perl
+
+#Install Asterisk Perl 
 cd /usr/src
 wget http://download.vicidial.com/required-apps/asterisk-perl-0.08.tar.gz
 tar xzf asterisk-perl-0.08.tar.gz
@@ -222,9 +231,6 @@ perl Makefile.PL
 make all
 make install 
 
-dnf --enablerepo=powertools install libsrtp-devel -y
-yum install -y elfutils-libelf-devel libedit-devel --allowerasing --nobest
-
 
 #Install Lame
 cd /usr/src
@@ -232,46 +238,32 @@ wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
 tar -zxf lame-3.99.5.tar.gz
 cd lame-3.99.5
 ./configure
-make -j`nproc`
+make
 make install
-
 
 #Install Jansson
 cd /usr/src/
-wget https://digip.org/jansson/releases/jansson-2.13.tar.gz
-tar xvzf jansson*
-cd jansson-2.13
+wget http://www.digip.org/jansson/releases/jansson-2.5.tar.gz
+tar -zxf jansson-2.5.tar.gz
+#tar xvzf jasson*
+cd jansson*
 ./configure
 make clean
-make -j`nproc`
+make
 make install 
 ldconfig
 
 #Install Dahdi
 echo "Install Dahdi"
-cd /usr/src/
-wget https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-3.2.0+3.2.0.tar.gz
-tar xzf dahdi*
-cd /usr/src/dahdi-linux-complete-3.2.0+3.2.0
-
-sudo sed -i 's|(netdev, \&wc->napi, \&wctc4xxp_poll, 64);|(netdev, \&wc->napi, \&wctc4xxp_poll);|g' /usr/src/dahdi-linux-complete-3.2.0+3.2.0/linux/drivers/dahdi/wctc4xxp/base.c
-sudo sed -i 's|<linux/pci-aspm.h>|<linux/pci.h>|g' /usr/src/dahdi-linux-complete-3.2.0+3.2.0/linux/include/dahdi/kernel.h
-
-make -j`nproc`
+yum install dahdi-* -y
+wget http://download.vicidial.com/beta-apps/dahdi-linux-complete-2.11.1.tar.gz
+tar xzf dahdi-linux-complete-2.11.1.tar.gz
+cd dahdi-linux-complete-2.11.1+2.11.1
+make all
 make install
-make install-config
-
-yum -y install dahdi-tools-libs --allowerasing --nobest
-
-cd tools
-make clean
-make -j`nproc`
-make install
-make install-config
-
 modprobe dahdi
 modprobe dahdi_dummy
-
+make config
 cp /etc/dahdi/system.conf.sample /etc/dahdi/system.conf
 /usr/sbin/dahdi_cfg -vvvvvvvvvvvvv
 
@@ -282,68 +274,25 @@ echo 'Continuing...'
 #Install Asterisk and LibPRI
 mkdir /usr/src/asterisk
 cd /usr/src/asterisk
-wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-1-current.tar.gz
-wget http://download.vicidial.com/required-apps/asterisk-13.29.2-vici.tar.gz 
+wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
+wget http://download.vicidial.com/required-apps/asterisk-13.29.2-vici.tar.gz
+
 
 tar -xvzf asterisk-*
-tar -xvzf libpri*
+tar -xvzf libpri-*
 
-cd /usr/src/asterisk/asterisk-13.29.2
-./contrib/scripts/install_prereq install
+cd /usr/src/asterisk/asterisk*
 
-./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-pjproject-bundled --with-jansson-bundled --with-ssl --enable-asteriskssl
+: ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
+./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
 
 make menuselect/menuselect menuselect-tree menuselect.makeopts
-menuselect/menuselect --disable astcanary menuselect.makeopts
+#enable app_meetme
 menuselect/menuselect --enable app_meetme menuselect.makeopts
+#enable res_http_websocket
 menuselect/menuselect --enable res_http_websocket menuselect.makeopts
+#enable res_srtp
 menuselect/menuselect --enable res_srtp menuselect.makeopts
-menuselect/menuselect --enable format_mp3 menuselect.makeopts
-menuselect/menuselect --enable app_mysql menuselect.makeopts
-menuselect/menuselect --enable cdr_mysql menuselect.makeopts
-menuselect/menuselect --enable app_skel menuselect.makeopts
-menuselect/menuselect --enable app_verbose menuselect.makeopts
-menuselect/menuselect --enable chan_pjsip menuselect.makeopts
-menuselect/menuselect --enable chan_rtp  menuselect.makeopts
-menuselect/menuselect --enable codec_g722 menuselect.makeopts
-menuselect/menuselect --enable codec_g726 menuselect.makeopts
-menuselect/menuselect --enable res_chan_stats menuselect.makeopts
-menuselect/menuselect --enable chan_multicast_rtp menuselect.makeopts
-menuselect/menuselect --enable res_config_mysql menuselect.makeopts
-menuselect/menuselect --enable G711_NEW_ALGORITHM menuselect.makeopts
-menuselect/menuselect --enable ADDRESS_SANITIZER menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-WAV menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-ULAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-ALAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-G729 menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-G722 menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-WAV menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-ULAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-ALAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-GSM menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-G729 menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-G722 menuselect.makeopts
-
-
-menuselect/menuselect --enable MOH-OPSOUND-ULAW menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-ALAW menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-GSM menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-G729 menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-G722 menuselect.makeopts
-
-menuselect/menuselect --disable astman menuselect.makeopts
-
-menuselect/menuselect --disable muted menuselect.makeopts
-
-menuselect/menuselect --disable stereorize menuselect.makeopts
-
-menuselect/menuselect --disable aelparse menuselect.makeopts
-
-menuselect/menuselect --disable astdb2sqlite3 menuselect.makeopts
-menuselect/menuselect --disable astdb2bdb menuselect.makeopts
-menuselect/menuselect --disable conf2ael menuselect.makeopts
-
-
 make -j ${JOBS} all
 make install
 make samples
@@ -384,7 +333,7 @@ update servers set asterisk_version='13.29.2';
 quit
 MYSQLCREOF
 
-read -p 'Asterisk Kuruldu, Hazırmısın?: '
+read -p 'Press Enter to continue: '
 
 echo 'Continuing...'
 
@@ -429,7 +378,7 @@ VARDB_port => 3306
 #  9 - Timeclock auto logout
 #  E - Email processor, (If multi-server system, this must only be on one server)
 #  S - SIP Logger (Patched Asterisk 13 required)
-VARactive_keepalives => 12345689ES
+VARactive_keepalives => 123456789ES
 
 # Asterisk version VICIDIAL is installed for
 VARasterisk_version => 13.X
@@ -567,15 +516,14 @@ cat <<CRONTAB>> /root/crontab-file
 ### inbound email parser
 * * * * * /usr/share/astguiclient/AST_inbound_email_parser.pl
 
+###backup
+47 23 * * * /usr/share/astguiclient/ADMIN_backup.pl
+
 ### Daily Reboot
 #30 6 * * * /sbin/reboot
 
 ######TILTIX GARBAGE FILES DELETE
 #00 22 * * * root cd /tmp/ && find . -name '*TILTXtmp*' -type f -delete
-
-### Dynportal
-@reboot /usr/bin/VB-firewall --whitelist=ViciWhite --dynamic --quiet
-* * * * * /usr/bin/VB-firewall --whitelist=ViciWhite --dynamic --quiet
 
 
 CRONTAB
@@ -584,9 +532,6 @@ crontab /root/crontab-file
 crontab -l
 
 #Install rc.local
-
-sudo sed -i 's|exit 0|### exit 0|g' /etc/rc.d/rc.local
-
 tee -a /etc/rc.d/rc.local <<EOF
 
 
@@ -606,11 +551,12 @@ tee -a /etc/rc.d/rc.local <<EOF
 
 ### start up the MySQL server
 
-systemctl restart mariadb.service
+systemctl start mariadb.service
+
 
 ### start up the apache web server
 
-systemctl restart httpd
+systemctl start httpd.service
 
 
 ### roll the Asterisk logs upon reboot
@@ -639,38 +585,11 @@ sleep 20
 ### start up asterisk
 
 /usr/share/astguiclient/start_asterisk_boot.pl
-
-exit 0
-
 EOF
 
 chmod +x /etc/rc.d/rc.local
 systemctl enable rc-local
 systemctl start rc-local
-
-##Install Dynportal
-yum install -y firewalld --skip-broken
-cd /home
-wget https://dialer.one/dynportal.zip
-wget https://dialer.one/firewall.zip
-wget https://dialer.one/aggregate
-wget https://dialer.one/VB-firewall
-
-mkdir -p /var/www/vhosts/dynportal
-mv /home/dynportal.zip /var/www/vhosts/dynportal/
-mv /home/firewall.zip /etc/firewalld/
-cd /var/www/vhosts/dynportal/
-unzip dynportal.zip
-cd etc/httpd/conf.d/
-mv viciportal-ssl.conf viciportal.conf /etc/httpd/conf.d/
-cd /etc/firewalld/
-unzip -o firewall.zip
-mv /home/aggregate /usr/bin/
-chmod +x /usr/bin/aggregate
-mv /home/VB-firewall /usr/bin/
-chmod +x /usr/bin/VB-firewall
-
-firewall-offline-cmd --add-port=446/tcp --zone=public
 
 
 ##Install Sounds
@@ -736,23 +655,15 @@ sox ../mohmp3/manolo_camp-morning_coffee.gsm manolo_camp-morning_coffee.gsm vol 
 sox -t ul -r 8000 -c 1 ../mohmp3/manolo_camp-morning_coffee.ulaw -t ul manolo_camp-morning_coffee.ulaw vol 0.25
 
 
+cat <<WELCOME>> /var/www/html/index.html
+<META HTTP-EQUIV=REFRESH CONTENT="1; URL=/vicidial/welcome.php">
+Please Hold while I redirect you!
+WELCOME
+
 chmod 777 /var/spool/asterisk/monitorDONE
-chkconfig asterisk off
-
-# mtop install
-cd /usr/local/src
-wget http://download.vicidial.com/required-apps/mtop-0.6.6.tar.gz
-tar -zxvf mtop-0.6.6.tar.gz
-cd mtop-*
-perl Makefile.PL
-make
-make install
-
-
-
 
 read -p 'Press Enter to Reboot: '
 
-echo "Restarting CentOS"
+echo "Restarting Centos"
 
 reboot
