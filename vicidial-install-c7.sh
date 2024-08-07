@@ -4,15 +4,15 @@ echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
 
-yum groupinstall "Development Tools" -y
+#yum groupinstall "Development Tools" -y
 
 #yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 #yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-yum -y install yum-utils
+#yum -y install yum-utils
 #yum-config-manager --enable remi-php74
-yum -y install gcc gcc-c++ --allowerasing --nobest
-yum -y install httpd httpd-devel httpd-tools --allowerasing --nobest
-yum install -y php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* --allowerasing --nobest
+yum -y install gcc gcc-c++ 
+yum -y install httpd httpd-devel httpd-tools 
+yum install -y php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* 
 yum -y install sqlite-devel
 
 
@@ -33,27 +33,27 @@ EOF
 tee -a /etc/php.ini <<EOF
 
 error_reporting  =  E_ALL & ~E_NOTICE
-memory_limit = 448M
+memory_limit = 1024M
 short_open_tag = On
 max_execution_time = 3330
 max_input_time = 3360
-post_max_size = 448M
-upload_max_filesize = 442M
+post_max_size = 1024M
+upload_max_filesize = 1024M
 default_socket_timeout = 3360
-date.timezone = America/New_York
+date.timezone = Europe/Istanbul
 EOF
 
 
 systemctl restart httpd
 
 
-cat <<MARIADB>> /etc/yum.repos.d/MariaDB.repo
+cat <<XMARIADBX>> /etc/yum.repos.d/MariaDB.repo
 [mariadb]
 name = MariaDB
-baseurl = http://yum.mariadb.org/10.5/centos7-amd64
+baseurl = http://yum.mariadb.org/10.4/centos7-amd64
 gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
 gpgcheck=1
-MARIADB
+XMARIADBX
 
 
 yum install mariadb-server mariadb -y
@@ -63,7 +63,7 @@ cp /etc/my.cnf /etc/my.cnf.original
 echo "" > /etc/my.cnf
 
 
-cat <<MYSQLCONF>> /etc/my.cnf
+cat <<xMYSQLCONFx>> /etc/my.cnf
 [mysql.server]
 user = mysql
 #basedir = /var/lib
@@ -137,7 +137,7 @@ interactive-timeout
 [mysqld_safe]
 #log-error = /var/log/mysqld/mysqld.log
 #pid-file = /var/run/mysqld/mysqld.pid
-MYSQLCONF
+xMYSQLCONFx
 
 mkdir /var/log/mysqld
 mv /var/log/mysqld.log /var/log/mysqld/mysqld.log
@@ -163,12 +163,6 @@ yum install perl-GD -y
 
 echo "Please Press ENTER for CPAN Install"
 
-yum install perl-CPAN -y
-yum install perl-YAML -y
-yum install perl-libwww-perl -y
-yum install perl-DBI -y
-yum install perl-DBD-MySQL -y
-yum install perl-GD -y
 cd /usr/bin/
 curl -LOk http://xrl.us/cpanm
 chmod +x cpanm
@@ -254,6 +248,7 @@ make install
 ldconfig
 
 #Install Dahdi
+cd /usr/src/
 echo "Install Dahdi"
 yum install dahdi-* -y
 wget http://download.vicidial.com/beta-apps/dahdi-linux-complete-2.11.1.tar.gz
@@ -274,12 +269,12 @@ echo 'Continuing...'
 #Install Asterisk and LibPRI
 mkdir /usr/src/asterisk
 cd /usr/src/asterisk
-wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
+wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-1-current.tar.gz
 wget http://download.vicidial.com/required-apps/asterisk-13.29.2-vici.tar.gz
 
 
 tar -xvzf asterisk-*
-tar -xvzf libpri-*
+tar -xvzf libpri-1-*
 
 cd /usr/src/asterisk/asterisk*
 
@@ -310,7 +305,7 @@ cd /usr/src/astguiclient/trunk
 
 #Add mysql users and Databases
 echo "%%%%%%%%%%%%%%%Please Enter Mysql Password Or Just Press Enter if you Dont have Password%%%%%%%%%%%%%%%%%%%%%%%%%%"
-mysql -u root -p << MYSQLCREOF
+mysql -u root -p << xMYSQLCREOFx
 CREATE DATABASE asterisk DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 CREATE USER 'cron'@'localhost' IDENTIFIED BY '1234';
 GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@'%' IDENTIFIED BY '1234';
@@ -331,7 +326,7 @@ use asterisk;
 \. /usr/src/astguiclient/trunk/extras/first_server_install.sql
 update servers set asterisk_version='13.29.2';
 quit
-MYSQLCREOF
+xMYSQLCREOFx
 
 read -p 'Press Enter to continue: '
 
@@ -417,7 +412,7 @@ read serveripadd
 sed -i s/SERVERIP/"$serveripadd"/g /etc/astguiclient.conf
 
 echo "Install VICIDIAL"
-perl install.pl --no-prompt --copy_sample_conf_files=Y
+perl install.pl --no-prompt --copy_sample_conf_files=N
 
 #Secure Manager 
 sed -i s/0.0.0.0/127.0.0.1/g /etc/asterisk/manager.conf
@@ -432,7 +427,7 @@ perl install.pl --no-prompt
 
 
 #Install Crontab
-cat <<CRONTAB>> /root/crontab-file
+cat <<xCRONTABx>> /root/crontab-file
 
 ### recording mixing/compressing/ftping scripts
 #0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_mix.pl
@@ -526,7 +521,7 @@ cat <<CRONTAB>> /root/crontab-file
 #00 22 * * * root cd /tmp/ && find . -name '*TILTXtmp*' -type f -delete
 
 
-CRONTAB
+xCRONTABx
 
 crontab /root/crontab-file
 crontab -l
@@ -663,7 +658,5 @@ WELCOME
 chmod 777 /var/spool/asterisk/monitorDONE
 
 read -p 'Press Enter to Reboot: '
-
 echo "Restarting Centos"
-
 reboot
