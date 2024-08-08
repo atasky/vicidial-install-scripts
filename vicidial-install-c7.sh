@@ -3,7 +3,8 @@
 echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
-
+echo "192.168.127.128 v7.viracall.net v7" >> /etc/hosts
+echo "8.8.8.8" >> /etc/resolv.conf
 #yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 #yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 #yum-config-manager --enable remi-php74
