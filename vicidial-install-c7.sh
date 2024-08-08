@@ -25,8 +25,6 @@ rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-MariaDB
 
 
 # Development
-yum clean all
-yum update
 yum -y install yum-utils
 yum -y install deltarpm
 yum -y install gcc gcc-c++ 
