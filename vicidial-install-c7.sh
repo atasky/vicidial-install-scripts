@@ -28,8 +28,9 @@ rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-MariaDB
 yum clean all
 yum update
 yum -y install yum-utils
+yum -y install deltarpm
 yum -y install gcc gcc-c++ 
-yum -y install httpd httpd-tools
+yum -y install httpd
 yum -y install screen
 yum -y install libuuid-devel gd-devel
 yum -y install ncurses ncurses-devel ncurses-libs
@@ -37,14 +38,15 @@ yum -y install libxml2 libxml2-devel
 yum -y install sqlite sqlite-devel
 yum -y install jansson jansson-devel
 yum -y install lame lame-devel
-yum -y install sox sox-devel
+yum -y install sox
+yum -y install sox-devel
 yum -y install openssl-devel speex-devel
 yum -y install wget curl curl-devel libcurl libcurl-devel
 yum -y install glibc libxml2.i686 glibc.i686
 yum -y install iftop htop
 yum -y install perl-core perl-libwww-perl perl-File-Which
 yum -y install libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel libuuid-devel sqlite-devel
-yum -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-pecl-ncurses php56-php-zip php56-php-fileinfo php56-php-opcache php56-php-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc python3-certbot-apache mod_ssl
+yum -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-pecl-ncurses php56-php-zip php56-php-fileinfo php56-php-opcache php56-php-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc mod_ssl
 yum -y install unzip make patch subversion readline-devel ImageMagick mutt certbot newt-devel sendmail
 yum -y install libss7 libss7-devel
 ln -s /lib64/libtinfo.so.5 /lib64/libtermcap.so.2
