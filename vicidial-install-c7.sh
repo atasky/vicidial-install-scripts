@@ -46,7 +46,7 @@ yum -y install perl-core perl-libwww-perl perl-File-Which
 yum -y install libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel libuuid-devel sqlite-devel
 yum -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-pecl-ncurses php56-php-zip php56-php-fileinfo php56-php-opcache php56-php-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc python3-certbot-apache mod_ssl
 yum -y install unzip make patch subversion readline-devel ImageMagick mutt certbot newt-devel sendmail
-yum -y install libss7 libss7-devel libopenarc libopenarc-devel libopendkim libopendkim-devel
+yum -y install libss7 libss7-devel
 ln -s /lib64/libtinfo.so.5 /lib64/libtermcap.so.2
 
 
