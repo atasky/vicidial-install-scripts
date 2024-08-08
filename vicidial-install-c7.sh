@@ -35,7 +35,7 @@ yum -y install yum-utils
 yum -y groupinstall "Development Tools"
 
 yum -y install gcc gcc-c++ 
-yum -y install httpd httpd-devel httpd-tools 
+yum -y install httpd httpd-tools 
 yum -y install libuuid-devel gd-devel
 yum -y install ncurses ncurses-devel ncurses-libs
 yum -y install libxml2 libxml2-devel
@@ -222,7 +222,7 @@ tar -xvzf libpri-1-*
 cd /usr/src/asterisk/asterisk*
 
 : ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
-./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
+./configure --libdir=/usr/lib --with-gsm=internal --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
 
 make menuselect/menuselect menuselect-tree menuselect.makeopts
 menuselect/menuselect --enable app_meetme menuselect.makeopts
@@ -353,7 +353,7 @@ read serveripadd
 sed -i s/SERVERIP/"$serveripadd"/g /etc/astguiclient.conf
 
 echo "Install VICIDIAL"
-perl install.pl --no-prompt --copy_sample_conf_files=N
+perl install.pl --no-prompt --copy_sample_conf_files=Y
 
 #Secure Manager 
 sed -i s/0.0.0.0/127.0.0.1/g /etc/asterisk/manager.conf
@@ -368,104 +368,8 @@ perl install.pl --no-prompt
 
 
 #Install Crontab
-cat <<xCRONTABx>> /root/crontab-file
 
-### recording mixing/compressing/ftping scripts
-#0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_mix.pl
-0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_mix.pl --MIX
-0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_VDonly.pl
-1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,49,52,55,58 * * * * /usr/share/astguiclient/AST_CRON_audio_2_compress.pl --MP3 --HTTPS
-#2,5,8,11,14,17,20,23,26,29,32,35,38,41,44,47,50,53,56,59 * * * * /usr/share/astguiclient/AST_CRON_audio_3_ftp.pl --MP3
-
-### keepalive script for astguiclient processes
-* * * * * /usr/share/astguiclient/ADMIN_keepalive_ALL.pl --cu3way
-
-### kill Hangup script for Asterisk updaters
-* * * * * /usr/share/astguiclient/AST_manager_kill_hung_congested.pl
-
-### updater for voicemail
-* * * * * /usr/share/astguiclient/AST_vm_update.pl
-
-### updater for conference validator
-* * * * * /usr/share/astguiclient/AST_conf_update.pl
-
-### flush queue DB table every hour for entries older than 1 hour
-11 * * * * /usr/share/astguiclient/AST_flush_DBqueue.pl -q
-
-### fix the vicidial_agent_log once every hour and the full day run at night
-33 * * * * /usr/share/astguiclient/AST_cleanup_agent_log.pl
-50 0 * * * /usr/share/astguiclient/AST_cleanup_agent_log.pl --last-24hours
-
-## uncomment below if using QueueMetrics
-#*/5 * * * * /usr/share/astguiclient/AST_cleanup_agent_log.pl --only-qm-live-call-check
-
-## uncomment below if using Vtiger
-#1 1 * * * /usr/share/astguiclient/Vtiger_optimize_all_tables.pl --quiet
-
-### updater for VICIDIAL hopper
-* * * * * /usr/share/astguiclient/AST_VDhopper.pl -q
-
-### adjust the GMT offset for the leads in the vicidial_list table
-1 1,7 * * * /usr/share/astguiclient/ADMIN_adjust_GMTnow_on_leads.pl --debug
-
-### reset several temporary-info tables in the database
-2 1 * * * /usr/share/astguiclient/AST_reset_mysql_vars.pl
-
-### optimize the database tables within the asterisk database
-3 1 * * * /usr/share/astguiclient/AST_DB_optimize.pl
-
-## adjust time on the server with ntp
-#30 * * * * /usr/sbin/ntpdate -u pool.ntp.org 2>/dev/null 1>&amp;2
-
-### VICIDIAL agent time log weekly and daily summary report generation
-2 0 * * 0 /usr/share/astguiclient/AST_agent_week.pl
-22 0 * * * /usr/share/astguiclient/AST_agent_day.pl
-
-### VICIDIAL campaign export scripts (OPTIONAL)
-#32 0 * * * /usr/share/astguiclient/AST_VDsales_export.pl
-#42 0 * * * /usr/share/astguiclient/AST_sourceID_summary_export.pl
-
-### remove old recordings
-#24 0 * * * /usr/bin/find /var/spool/asterisk/monitorDONE -maxdepth 2 -type f -mtime +7 -print | xargs rm -f
-#26 1 * * * /usr/bin/find /var/spool/asterisk/monitorDONE/MP3 -maxdepth 2 -type f -mtime +65 -print | xargs rm -f
-#25 1 * * * /usr/bin/find /var/spool/asterisk/monitorDONE/FTP -maxdepth 2 -type f -mtime +1 -print | xargs rm -f
-24 1 * * * /usr/bin/find /var/spool/asterisk/monitorDONE/ORIG -maxdepth 2 -type f -mtime +1 -print | xargs rm -f
-
-
-### roll logs monthly on high-volume dialing systems
-#30 1 1 * * /usr/share/astguiclient/ADMIN_archive_log_tables.pl
-
-### remove old vicidial logs and asterisk logs more than 2 days old
-28 0 * * * /usr/bin/find /var/log/astguiclient -maxdepth 1 -type f -mtime +2 -print | xargs rm -f
-29 0 * * * /usr/bin/find /var/log/asterisk -maxdepth 3 -type f -mtime +2 -print | xargs rm -f
-30 0 * * * /usr/bin/find / -maxdepth 1 -name "screenlog.0*" -mtime +4 -print | xargs rm -f
-
-### cleanup of the scheduled callback records
-25 0 * * * /usr/share/astguiclient/AST_DB_dead_cb_purge.pl --purge-non-cb -q
-
-### GMT adjust script - uncomment to enable
-#45 0 * * * /usr/share/astguiclient/ADMIN_adjust_GMTnow_on_leads.pl --list-settings
-
-### Dialer Inventory Report
-1 7 * * * /usr/share/astguiclient/AST_dialer_inventory_snapshot.pl -q --override-24hours
-
-### inbound email parser
-* * * * * /usr/share/astguiclient/AST_inbound_email_parser.pl
-
-###backup
-47 23 * * * /usr/share/astguiclient/ADMIN_backup.pl
-
-### Daily Reboot
-#30 6 * * * /sbin/reboot
-
-######TILTIX GARBAGE FILES DELETE
-#00 22 * * * root cd /tmp/ && find . -name '*TILTXtmp*' -type f -delete
-
-
-xCRONTABx
-
-crontab /root/crontab-file
-crontab -l
+crontab /opt/vicidial-install-scripts/crontab-file
 
 #Install rc.local
 tee -a /etc/rc.d/rc.local <<EOF
