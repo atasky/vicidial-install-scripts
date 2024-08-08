@@ -9,10 +9,10 @@ echo "8.8.8.8" >> /etc/resolv.conf
 #yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 #yum-config-manager --enable remi-php74
 rm -rf /etc/yum.repos.d/*
-cp /opt/vicidial-install-scripts/yumrepos_d.zip /etc/yum.repos.d/
+cp /opt/vicidial-install-scripts/yumrepos_v2.zip /etc/yum.repos.d/
 cd /etc/yum.repos.d/
-unzip yumrepos_d.zip
-rm -rf yumrepos_d.zip
+unzip yumrepos_v2.zip
+rm -rf yumrepos_v2.zip
 cp /opt/vicidial-install-scripts/RPM-GPG-KEY-remi /etc/pki/rpm-gpg/
 cp /opt/vicidial-install-scripts/RPM-GPG-KEY-EPEL-7 /etc/pki/rpm-gpg/
 cp /opt/vicidial-install-scripts/RPM-GPG-KEY-raven /etc/pki/rpm-gpg/
@@ -35,7 +35,8 @@ yum -y install yum-utils
 yum -y groupinstall "Development Tools"
 
 yum -y install gcc gcc-c++ 
-yum -y install httpd httpd-tools 
+yum -y install httpd httpd-tools
+yum -y install screen
 yum -y install libuuid-devel gd-devel
 yum -y install ncurses ncurses-devel ncurses-libs
 yum -y install libxml2 libxml2-devel
@@ -50,7 +51,7 @@ yum -y install iftop htop
 yum -y install perl-core perl-libwww-perl perl-File-Which
 yum -y install libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel libuuid-devel sqlite-devel
 yum -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-pecl-ncurses php56-php-zip php56-php-fileinfo php56-php-opcache php56-php-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc python3-certbot-apache mod_ssl
-yum -y install unzip make patch subversion readline-devel ImageMagick screen mutt certbot newt-devel sendmail
+yum -y install unzip make patch subversion readline-devel ImageMagick mutt certbot newt-devel sendmail
 yum -y install libss7 libss7-devel libopenarc libopenarc-devel libopendkim libopendkim-devel
 ln -s /lib64/libtinfo.so.5 /lib64/libtermcap.so.2
 chmod u+x /opt/vicidial-install-scripts/install_prereq
@@ -368,65 +369,10 @@ perl install.pl --no-prompt
 
 
 #Install Crontab
-
 crontab /opt/vicidial-install-scripts/crontab-file
 
 #Install rc.local
-tee -a /etc/rc.d/rc.local <<EOF
-
-
-# OPTIONAL enable ip_relay(for same-machine trunking and blind monitoring)
-
-/usr/share/astguiclient/ip_relay/relay_control start 2>/dev/null 1>&2
-
-
-# Disable console blanking and powersaving
-
-/usr/bin/setterm -blank
-
-/usr/bin/setterm -powersave off
-
-/usr/bin/setterm -powerdown
-
-
-### start up the MySQL server
-
-systemctl start mariadb.service
-
-
-### start up the apache web server
-
-systemctl start httpd.service
-
-
-### roll the Asterisk logs upon reboot
-
-/usr/share/astguiclient/ADMIN_restart_roll_logs.pl
-
-
-### clear the server-related records from the database
-
-/usr/share/astguiclient/AST_reset_mysql_vars.pl
-
-
-### load dahdi drivers
-
-modprobe dahdi
-modprobe dahdi_dummy
-
-/usr/sbin/dahdi_cfg -vvvvvvvvvvvvv
-
-
-### sleep for 20 seconds before launching Asterisk
-
-sleep 20
-
-
-### start up asterisk
-
-/usr/share/astguiclient/start_asterisk_boot.pl
-EOF
-
+cat /opt/vicidial-install-scripts/rc.local > /etc/rc.d/rc.local
 chmod +x /etc/rc.d/rc.local
 systemctl enable rc-local
 systemctl start rc-local
