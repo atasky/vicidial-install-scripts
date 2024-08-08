@@ -140,7 +140,7 @@ interactive-timeout
 xMYSQLCONFx
 
 mkdir /var/log/mysqld
-mv /var/log/mysqld.log /var/log/mysqld/mysqld.log
+#mv /var/log/mysqld.log /var/log/mysqld/mysqld.log
 touch /var/log/mysqld/slow-queries.log
 chown -R mysql:mysql /var/log/mysqld
 
