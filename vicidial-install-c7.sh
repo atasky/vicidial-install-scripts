@@ -14,6 +14,7 @@ cd /etc/yum.repos.d/
 unzip yumrepos_d.zip
 rm -rf yumrepos_d.zip
 mv /opt/vicidial-install-scripts/RPM-GPG-KEY-remi /etc/pki/rpm-gpg/
+mv /opt/vicidial-install-scripts/RPM-GPG-KEY-EPEL-7 /etc/pki/rpm/gpg/
 
 echo "exclude=*i686*" >> /etc/yum.conf
 
@@ -288,6 +289,7 @@ tar -xvzf asterisk-*
 tar -xvzf libpri-1-*
 
 cd /usr/src/asterisk/asterisk*
+./contrib/scripts/install_prereq install
 
 : ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
 ./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
