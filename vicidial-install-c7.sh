@@ -252,13 +252,13 @@ echo "%%%%%%%%%%%%%%%Please Enter Mysql Password Or Just Press Enter if you Dont
 mysql -u root -p << xMYSQLCREOFx
 CREATE DATABASE asterisk DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 CREATE USER 'cron'@'localhost' IDENTIFIED BY '1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@'%' IDENTIFIED BY '1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@localhost IDENTIFIED BY '1234';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@'%' IDENTIFIED BY '24449799';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@localhost IDENTIFIED BY '24449799';
 GRANT RELOAD ON *.* TO cron@'%';
 GRANT RELOAD ON *.* TO cron@localhost;
-CREATE USER 'custom'@'localhost' IDENTIFIED BY 'custom1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@'%' IDENTIFIED BY 'custom1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@localhost IDENTIFIED BY 'custom1234';
+CREATE USER 'custom'@'localhost' IDENTIFIED BY 'custom24449799';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@'%' IDENTIFIED BY 'custom24449799';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@localhost IDENTIFIED BY 'custom24449799';
 GRANT RELOAD ON *.* TO custom@'%';
 GRANT RELOAD ON *.* TO custom@localhost;
 flush privileges;
@@ -298,9 +298,9 @@ VARserver_ip => SERVERIP
 VARDB_server => localhost
 VARDB_database => asterisk
 VARDB_user => cron
-VARDB_pass => 1234
+VARDB_pass => 24449799
 VARDB_custom_user => custom
-VARDB_custom_pass => custom1234
+VARDB_custom_pass => custom24449799
 VARDB_port => 3306
 
 # Alpha-Numeric list of the astGUIclient processes to be kept running
@@ -445,4 +445,4 @@ chmod 777 /var/spool/asterisk/monitorDONE
 read -p 'Press Enter to Reboot: '
 
 echo "Restarting Centos"
-reboot
+sleep 3 && reboot
