@@ -4,17 +4,27 @@ echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
 
-#yum groupinstall "Development Tools" -y
-
 #yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 #yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 #yum -y install yum-utils
 #yum-config-manager --enable remi-php74
+rm -rf /etc/yum.repos.d/*
+cp /opt/vicidial-install-scripts/yumrepos_d.zip /etc/yum.repos.d/
+cd /etc/yum.repos.d/
+unzip yumrepos_d.zip
+rm -rf yumrepos_d.zip
+
+echo "exclude=*i686*" >> /etc/yum.conf
+
+cat <<yumdisableplugins>> /etc/yum/pluginconf.d/search-disabled-repos.conf
+notify_only=0
+yumdisableplugins
+
+# Development
+yum -y groupinstall "Development Tools"
 yum -y install gcc gcc-c++ 
 yum -y install httpd httpd-devel httpd-tools 
-yum install -y php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* 
-yum -y install sqlite-devel
-
+yum -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen mutt glibc certbot python3-certbot-apache mod_ssl openssl-devel newt-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* 
 
 tee -a /etc/httpd/conf/httpd.conf <<EOF
 
@@ -45,7 +55,6 @@ EOF
 
 
 systemctl restart httpd
-
 
 cat <<XMARIADBX>> /etc/yum.repos.d/MariaDB.repo
 [mariadb]
