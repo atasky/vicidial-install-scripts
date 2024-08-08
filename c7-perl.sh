@@ -9,8 +9,8 @@ yum install perl-DBI -y
 yum install perl-DBD-MySQL -y
 yum install perl-GD -y
 yum install perl-core -y
-echo "Please Press ENTER for CPAN Install"
 
+echo "Please Press ENTER for CPAN Install"
 cd /usr/bin/
 curl -LOk http://xrl.us/cpanm
 chmod +x cpanm
