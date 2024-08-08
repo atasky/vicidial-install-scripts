@@ -13,12 +13,23 @@ cp /opt/vicidial-install-scripts/yumrepos_d.zip /etc/yum.repos.d/
 cd /etc/yum.repos.d/
 unzip yumrepos_d.zip
 rm -rf yumrepos_d.zip
+mv /opt/vicidial-install-scripts/RPM-GPG-KEY-remi /etc/pki/rpm-gpg/
 
 echo "exclude=*i686*" >> /etc/yum.conf
 
+# yum plugins
 cat <<yumdisableplugins>> /etc/yum/pluginconf.d/search-disabled-repos.conf
 notify_only=0
 yumdisableplugins
+
+# MariaDB
+cat <<XMARIADBX>> /etc/yum.repos.d/MariaDB.repo
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.4/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+XMARIADBX
 
 # Development
 yum -y groupinstall "Development Tools"
@@ -55,15 +66,6 @@ EOF
 
 
 systemctl restart httpd
-
-cat <<XMARIADBX>> /etc/yum.repos.d/MariaDB.repo
-[mariadb]
-name = MariaDB
-baseurl = http://yum.mariadb.org/10.4/centos7-amd64
-gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgcheck=1
-XMARIADBX
-
 
 yum install mariadb-server mariadb -y
 
