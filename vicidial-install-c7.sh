@@ -36,15 +36,22 @@ yum -y groupinstall "Development Tools"
 
 yum -y install gcc gcc-c++ 
 yum -y install httpd httpd-devel httpd-tools 
-yum -y install libuuid-devel
+yum -y install libuuid-devel gd-devel
 yum -y install ncurses ncurses-devel ncurses-libs
 yum -y install libxml2 libxml2-devel
 yum -y install sqlite sqlite-devel
 yum -y install jansson jansson-devel
 yum -y install lame lame-devel
 yum -y install sox sox-devel
-yum -y install yum-utils
-yum -y install "php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-pecl-ncurses php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen mutt glibc certbot python3-certbot-apache mod_ssl openssl-devel newt-devel sqlite-devel libuuid-devel sendmail htop iftop perl-File-Which libss7 wget mariadb-devel libss7* libopen* libxml2.i686 glibc.i686 speex-devel libcurl-devel"
+yum -y install openssl-devel speex-devel
+yum -y install wget curl curl-devel libcurl libcurl-devel
+yum -y install glibc libxml2.i686 glibc.i686
+yum -y install iftop htop
+yum -y install perl-core perl-libwww-perl perl-File-Which
+yum -y install libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel libuuid-devel sqlite-devel
+yum -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-pecl-ncurses php56-php-zip php56-php-fileinfo php56-php-opcache php56-php-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc python3-certbot-apache mod_ssl
+yum -y install unzip make patch subversion readline-devel ImageMagick screen mutt certbot newt-devel sendmail
+yum -y install libss7 libss7-devel libopenarc libopenarc-devel libopendkim libopendkim-devel
 ln -s /lib64/libtinfo.so.5 /lib64/libtermcap.so.2
 chmod u+x /opt/vicidial-install-scripts/install_prereq
 /opt/vicidial-install-scripts/install_prereq install
@@ -79,7 +86,7 @@ EOF
 
 systemctl restart httpd
 
-yum install mariadb-server mariadb -y
+yum -y install mariadb-devel mariadb-server mariadb
 
 cp /etc/my.cnf /etc/my.cnf.original
 
