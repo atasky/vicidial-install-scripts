@@ -177,7 +177,7 @@ systemctl restart mariadb.service
 #Install Asterisk Perl 
 cd /usr/src
 wget http://download.vicidial.com/required-apps/asterisk-perl-0.08.tar.gz
-tar xzf asterisk-perl-0.08.tar.gz
+tar -zxvf asterisk-perl-0.08.tar.gz
 cd asterisk-perl-0.08
 perl Makefile.PL
 make all
@@ -269,7 +269,7 @@ use asterisk;
 \. /usr/src/astguiclient/trunk/extras/MySQL_AST_CREATE_tables.sql
 \. /usr/src/astguiclient/trunk/extras/first_server_install.sql
 update servers set asterisk_version='13.29.2';
-quit;
+quit
 xMYSQLCREOFx
 
 read -p 'Press Enter to continue: '
@@ -361,12 +361,6 @@ perl install.pl --no-prompt --copy_sample_conf_files=Y
 #Secure Manager 
 sed -i s/0.0.0.0/127.0.0.1/g /etc/asterisk/manager.conf
 
-echo "Populate AREA CODES"
-/usr/share/astguiclient/ADMIN_area_code_populate.pl
-echo "Replace OLD IP. You need to Enter your Current IP here"
-/usr/share/astguiclient/ADMIN_update_server_ip.pl --old-server_ip=10.10.10.15
-
-
 perl install.pl --no-prompt
 
 
@@ -442,6 +436,8 @@ sox ../mohmp3/manolo_camp-morning_coffee.wav manolo_camp-morning_coffee.wav vol 
 sox ../mohmp3/manolo_camp-morning_coffee.gsm manolo_camp-morning_coffee.gsm vol 0.25
 sox -t ul -r 8000 -c 1 ../mohmp3/manolo_camp-morning_coffee.ulaw -t ul manolo_camp-morning_coffee.ulaw vol 0.25
 
+echo "Populate AREA CODES"
+/usr/share/astguiclient/ADMIN_area_code_populate.pl
 
 cat <<WELCOME>> /var/www/html/index.html
 <META HTTP-EQUIV=REFRESH CONTENT="1; URL=/vicidial/welcome.php">
