@@ -231,8 +231,8 @@ menuselect/menuselect --enable format_mp3 menuselect.makeopts
 menuselect/menuselect --enable app_mysql menuselect.makeopts
 menuselect/menuselect --enable cdr_mysql menuselect.makeopts
 
-
 make -j ${JOBS} all
+./contrib/scripts/install_prereq install
 make install
 make samples
 
@@ -242,7 +242,7 @@ echo 'Continuing...'
 
 #Install astguiclient
 echo "Installing astguiclient"
-mkdir -p /usr/src/astguiclient
+mkdir /usr/src/astguiclient
 cd /usr/src/astguiclient
 svn checkout svn://svn.eflo.net/agc_2-X/trunk
 cd /usr/src/astguiclient/trunk
