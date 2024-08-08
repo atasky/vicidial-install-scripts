@@ -21,7 +21,7 @@ rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-remi
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-raven
 
-echo "exclude=*i686*" >> /etc/yum.conf
+#echo "exclude=*i686*" >> /etc/yum.conf
 
 # yum plugins
 cat <<yumdisableplugins>> /etc/yum/pluginconf.d/search-disabled-repos.conf
