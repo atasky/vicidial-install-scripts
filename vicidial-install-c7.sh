@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Vicidial installation Centos7 with WebPhone(WebRTC/SIP.js)"
 
@@ -361,8 +361,6 @@ perl install.pl --no-prompt --copy_sample_conf_files=Y
 #Secure Manager 
 sed -i s/0.0.0.0/127.0.0.1/g /etc/asterisk/manager.conf
 
-perl install.pl --no-prompt
-
 
 #Install Crontab
 crontab /opt/vicidial-install-scripts/crontab-file
@@ -436,8 +434,6 @@ sox ../mohmp3/manolo_camp-morning_coffee.wav manolo_camp-morning_coffee.wav vol 
 sox ../mohmp3/manolo_camp-morning_coffee.gsm manolo_camp-morning_coffee.gsm vol 0.25
 sox -t ul -r 8000 -c 1 ../mohmp3/manolo_camp-morning_coffee.ulaw -t ul manolo_camp-morning_coffee.ulaw vol 0.25
 
-echo "Populate AREA CODES"
-/usr/share/astguiclient/ADMIN_area_code_populate.pl
 
 cat <<WELCOME>> /var/www/html/index.html
 <META HTTP-EQUIV=REFRESH CONTENT="1; URL=/vicidial/welcome.php">
@@ -447,5 +443,6 @@ WELCOME
 chmod 777 /var/spool/asterisk/monitorDONE
 
 read -p 'Press Enter to Reboot: '
+
 echo "Restarting Centos"
 reboot
