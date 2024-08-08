@@ -23,17 +23,11 @@ rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-raven
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-MariaDB
 #echo "exclude=*i686*" >> /etc/yum.conf
 
-# yum plugins
-cat <<yumdisableplugins>> /etc/yum/pluginconf.d/search-disabled-repos.conf
-notify_only=0
-yumdisableplugins
 
 # Development
 yum clean all
-yum -y update
+yum update
 yum -y install yum-utils
-yum -y groupinstall "Development Tools"
-
 yum -y install gcc gcc-c++ 
 yum -y install httpd httpd-tools
 yum -y install screen
@@ -54,8 +48,7 @@ yum -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd 
 yum -y install unzip make patch subversion readline-devel ImageMagick mutt certbot newt-devel sendmail
 yum -y install libss7 libss7-devel libopenarc libopenarc-devel libopendkim libopendkim-devel
 ln -s /lib64/libtinfo.so.5 /lib64/libtermcap.so.2
-chmod u+x /opt/vicidial-install-scripts/install_prereq
-/opt/vicidial-install-scripts/install_prereq install
+
 
 tee -a /etc/httpd/conf/httpd.conf <<EOF
 
@@ -221,6 +214,8 @@ tar -xvzf asterisk-*
 tar -xvzf libpri-1-*
 
 cd /usr/src/asterisk/asterisk*
+chmod u+x /opt/vicidial-install-scripts/install_prereq
+bash /opt/vicidial-install-scripts/install_prereq install
 
 : ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
 ./configure --libdir=/usr/lib --with-gsm=internal --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
@@ -229,6 +224,13 @@ make menuselect/menuselect menuselect-tree menuselect.makeopts
 menuselect/menuselect --enable app_meetme menuselect.makeopts
 menuselect/menuselect --enable res_http_websocket menuselect.makeopts
 menuselect/menuselect --enable res_srtp menuselect.makeopts
+menuselect/menuselect --enable chan_pjsip menuselect.makeopts
+menuselect/menuselect --enable codec_g722 menuselect.makeopts
+menuselect/menuselect --enable codec_g726 menuselect.makeopts
+menuselect/menuselect --enable format_mp3 menuselect.makeopts
+menuselect/menuselect --enable app_mysql menuselect.makeopts
+menuselect/menuselect --enable cdr_mysql menuselect.makeopts
+
 
 make -j ${JOBS} all
 make install
@@ -240,7 +242,7 @@ echo 'Continuing...'
 
 #Install astguiclient
 echo "Installing astguiclient"
-mkdir /usr/src/astguiclient
+mkdir -p /usr/src/astguiclient
 cd /usr/src/astguiclient
 svn checkout svn://svn.eflo.net/agc_2-X/trunk
 cd /usr/src/astguiclient/trunk
@@ -267,7 +269,7 @@ use asterisk;
 \. /usr/src/astguiclient/trunk/extras/MySQL_AST_CREATE_tables.sql
 \. /usr/src/astguiclient/trunk/extras/first_server_install.sql
 update servers set asterisk_version='13.29.2';
-quit
+quit;
 xMYSQLCREOFx
 
 read -p 'Press Enter to continue: '
