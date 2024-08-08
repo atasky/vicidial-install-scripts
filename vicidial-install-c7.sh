@@ -188,27 +188,6 @@ make all
 make install 
 
 
-#Install Lame
-#cd /usr/src
-#wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-#tar -zxf lame-3.99.5.tar.gz
-#cd lame-3.99.5
-#./configure
-#make
-#make install
-
-#Install Jansson
-#cd /usr/src/
-#wget http://www.digip.org/jansson/releases/jansson-2.5.tar.gz
-#tar -zxf jansson-2.5.tar.gz
-#tar xvzf jasson*
-#cd jansson*
-#./configure
-#make clean
-#make
-#make install 
-#ldconfig
-
 #Install Dahdi
 cd /usr/src/
 echo "Install Dahdi"
@@ -239,18 +218,15 @@ tar -xvzf asterisk-*
 tar -xvzf libpri-1-*
 
 cd /usr/src/asterisk/asterisk*
-#./contrib/scripts/install_prereq install
 
 : ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
 ./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
 
 make menuselect/menuselect menuselect-tree menuselect.makeopts
-#enable app_meetme
 menuselect/menuselect --enable app_meetme menuselect.makeopts
-#enable res_http_websocket
 menuselect/menuselect --enable res_http_websocket menuselect.makeopts
-#enable res_srtp
 menuselect/menuselect --enable res_srtp menuselect.makeopts
+
 make -j ${JOBS} all
 make install
 make samples
