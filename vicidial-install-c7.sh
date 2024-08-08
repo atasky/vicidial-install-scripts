@@ -39,15 +39,17 @@ XMARIADBX
 
 # Development
 yum -y groupinstall "Development Tools"
+
 yum -y install gcc gcc-c++ 
 yum -y install httpd httpd-devel httpd-tools 
 yum -y install libuuid-devel
-yum -y install ncurses-devel
-yum -y install libxml2-devel
-yum -y install sqlite-devel
-yum -y install jansson-devel
+yum -y install ncurses ncurses-devel ncurses-libs
+yum -y install libxml2 libxml2-devel
+yum -y install sqlite sqlite-devel
+yum -y install jansson jansson-devel
 yum -y install lame lame-devel
-yum -y install "php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen mutt glibc certbot python3-certbot-apache mod_ssl openssl-devel newt-devel sqlite-devel libuuid-devel sox sendmail htop iftop perl-File-Which libss7 wget mariadb-devel libss7* libopen* libxml2.i686 glibc.i686 speex-devel libcurl-devel"
+
+yum -y install "php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-pecl-ncurses php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen mutt glibc certbot python3-certbot-apache mod_ssl openssl-devel newt-devel sqlite-devel libuuid-devel sox sendmail htop iftop perl-File-Which libss7 wget mariadb-devel libss7* libopen* libxml2.i686 glibc.i686 speex-devel libcurl-devel"
 ln -s /lib64/libtinfo.so.5 /lib64/libtermcap.so.2
 chmod u+x /opt/vicidial-install-scripts/install_prereq
 /opt/vicidial-install-scripts/install_prereq install
@@ -254,25 +256,25 @@ make install
 
 
 #Install Lame
-cd /usr/src
-wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-tar -zxf lame-3.99.5.tar.gz
-cd lame-3.99.5
-./configure
-make
-make install
+#cd /usr/src
+#wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+#tar -zxf lame-3.99.5.tar.gz
+#cd lame-3.99.5
+#./configure
+#make
+#make install
 
 #Install Jansson
-cd /usr/src/
-wget http://www.digip.org/jansson/releases/jansson-2.5.tar.gz
-tar -zxf jansson-2.5.tar.gz
+#cd /usr/src/
+#wget http://www.digip.org/jansson/releases/jansson-2.5.tar.gz
+#tar -zxf jansson-2.5.tar.gz
 #tar xvzf jasson*
-cd jansson*
-./configure
-make clean
-make
-make install 
-ldconfig
+#cd jansson*
+#./configure
+#make clean
+#make
+#make install 
+#ldconfig
 
 #Install Dahdi
 cd /usr/src/
