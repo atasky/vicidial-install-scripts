@@ -210,14 +210,10 @@ wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-1-current.tar.gz
 wget http://download.vicidial.com/required-apps/asterisk-13.29.2-vici.tar.gz
 
 
-tar -xvzf asterisk-*
-tar -xvzf libpri-1-*
+tar -zxvf asterisk-*
+tar -zxvf libpri-1-*
 
 cd /usr/src/asterisk/asterisk*
-chmod u+x /opt/vicidial-install-scripts/install_prereq
-bash /opt/vicidial-install-scripts/install_prereq install
-
-: ${JOBS:=$(( $(nproc) + $(nproc) / 2 ))}
 ./configure --libdir=/usr/lib --with-gsm=internal --with-ssl --enable-asteriskssl --with-pjproject-bundled --with-jansson-bundled
 
 make menuselect/menuselect menuselect-tree menuselect.makeopts
@@ -231,13 +227,12 @@ menuselect/menuselect --enable format_mp3 menuselect.makeopts
 menuselect/menuselect --enable app_mysql menuselect.makeopts
 menuselect/menuselect --enable cdr_mysql menuselect.makeopts
 
-make -j ${JOBS} all
+make -j 16 all
 ./contrib/scripts/install_prereq install
 make install
 make samples
 
 read -p 'Press Enter to continue: '
-
 echo 'Continuing...'
 
 #Install astguiclient
