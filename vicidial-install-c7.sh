@@ -187,15 +187,21 @@ make install
 #Install Dahdi
 cd /usr/src/
 echo "Install Dahdi"
-yum install dahdi-* -y
-wget http://download.vicidial.com/beta-apps/dahdi-linux-complete-2.11.1.tar.gz
-tar xzf dahdi-linux-complete-2.11.1.tar.gz
-cd dahdi-linux-complete-2.11.1+2.11.1
+wget https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
+tar -vxzf dahdi-linux-complete-current.tar.gz
+cd dahdi-linux-complete-3.4.0+3.4.0/
+cd tools
+autoreconf -i
+./configure
+make
+make install
+make install-config
+cd ..
 make all
 make install
 modprobe dahdi
 modprobe dahdi_dummy
-make config
+make install-config
 cp /etc/dahdi/system.conf.sample /etc/dahdi/system.conf
 /usr/sbin/dahdi_cfg -vvvvvvvvvvvvv
 
@@ -227,7 +233,7 @@ menuselect/menuselect --enable format_mp3 menuselect.makeopts
 menuselect/menuselect --enable app_mysql menuselect.makeopts
 menuselect/menuselect --enable cdr_mysql menuselect.makeopts
 
-make -j 16 all
+make -j 12 all
 ./contrib/scripts/install_prereq install
 make install
 make samples
