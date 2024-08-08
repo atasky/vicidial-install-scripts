@@ -14,7 +14,7 @@ cd /etc/yum.repos.d/
 unzip yumrepos_d.zip
 rm -rf yumrepos_d.zip
 mv /opt/vicidial-install-scripts/RPM-GPG-KEY-remi /etc/pki/rpm-gpg/
-mv /opt/vicidial-install-scripts/RPM-GPG-KEY-EPEL-7 /etc/pki/rpm/gpg/
+mv /opt/vicidial-install-scripts/RPM-GPG-KEY-EPEL-7 /etc/pki/rpm-gpg/
 
 echo "exclude=*i686*" >> /etc/yum.conf
 
