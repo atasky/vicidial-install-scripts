@@ -1,15 +1,15 @@
 #!/bin/sh
 
-echo "Vicidial installation CentOS 8 with WebPhone(WebRTC/SIP.js)"
+echo "Vicidial installation CentOS 9 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
 
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm --skip-broken
-yum -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm --skip-broken
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm --skip-broken
+yum -y install http://rpms.remirepo.net/enterprise/remi-release-9.rpm --skip-broken
 yum -y install yum-utils --skip-broken
 
 yum groupinstall "Development Tools" -y --allowerasing --nobest
-#dnf module enable php:remi-5.6 -y
+dnf module enable php:remi-5.6 -y
 dnf module enable mariadb:10.5 -y
 
 dnf -y install dnf-plugins-core --skip-broken
@@ -301,8 +301,6 @@ cd /usr/src/asterisk/asterisk-13.29.2
 ./configure --libdir=/usr/lib --with-gsm=internal --enable-opus --enable-srtp --with-pjproject-bundled --with-jansson-bundled --with-ssl --enable-asteriskssl
 
 make menuselect/menuselect menuselect-tree menuselect.makeopts
-menuselect/menuselect --disable astcanary menuselect.makeopts
-menuselect/menuselect --enable app_meetme menuselect.makeopts
 menuselect/menuselect --enable res_http_websocket menuselect.makeopts
 menuselect/menuselect --enable res_srtp menuselect.makeopts
 menuselect/menuselect --enable format_mp3 menuselect.makeopts
@@ -317,38 +315,7 @@ menuselect/menuselect --enable codec_g726 menuselect.makeopts
 menuselect/menuselect --enable res_chan_stats menuselect.makeopts
 menuselect/menuselect --enable chan_multicast_rtp menuselect.makeopts
 menuselect/menuselect --enable res_config_mysql menuselect.makeopts
-menuselect/menuselect --enable G711_NEW_ALGORITHM menuselect.makeopts
-menuselect/menuselect --enable ADDRESS_SANITIZER menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-WAV menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-ULAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-ALAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-G729 menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN-G722 menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-WAV menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-ULAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-ALAW menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-GSM menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-G729 menuselect.makeopts
-menuselect/menuselect --enable CORE-SOUNDS-EN_GB-G722 menuselect.makeopts
 
-
-menuselect/menuselect --enable MOH-OPSOUND-ULAW menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-ALAW menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-GSM menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-G729 menuselect.makeopts
-menuselect/menuselect --enable MOH-OPSOUND-G722 menuselect.makeopts
-
-menuselect/menuselect --disable astman menuselect.makeopts
-
-menuselect/menuselect --disable muted menuselect.makeopts
-
-menuselect/menuselect --disable stereorize menuselect.makeopts
-
-menuselect/menuselect --disable aelparse menuselect.makeopts
-
-menuselect/menuselect --disable astdb2sqlite3 menuselect.makeopts
-menuselect/menuselect --disable astdb2bdb menuselect.makeopts
-menuselect/menuselect --disable conf2ael menuselect.makeopts
 
 
 make -j ${JOBS} all
@@ -370,14 +337,14 @@ cd /usr/src/astguiclient/trunk
 echo "%%%%%%%%%%%%%%%Please Enter Mysql Password Or Just Press Enter if you Dont have Password%%%%%%%%%%%%%%%%%%%%%%%%%%"
 mysql -u root -p << MYSQLCREOF
 CREATE DATABASE asterisk DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-CREATE USER 'cron'@'localhost' IDENTIFIED BY '1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@'%' IDENTIFIED BY '1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@localhost IDENTIFIED BY '1234';
+CREATE USER 'cron'@'localhost' IDENTIFIED BY '24449799';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@'%' IDENTIFIED BY '24449799';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO cron@localhost IDENTIFIED BY '24449799';
 GRANT RELOAD ON *.* TO cron@'%';
 GRANT RELOAD ON *.* TO cron@localhost;
-CREATE USER 'custom'@'localhost' IDENTIFIED BY 'custom1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@'%' IDENTIFIED BY 'custom1234';
-GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@localhost IDENTIFIED BY 'custom1234';
+CREATE USER 'custom'@'localhost' IDENTIFIED BY 'custom24449799';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@'%' IDENTIFIED BY 'custom24449799';
+GRANT SELECT,CREATE,ALTER,INSERT,UPDATE,DELETE,LOCK TABLES on asterisk.* TO custom@localhost IDENTIFIED BY 'custom24449799';
 GRANT RELOAD ON *.* TO custom@'%';
 GRANT RELOAD ON *.* TO custom@localhost;
 flush privileges;
@@ -417,9 +384,9 @@ VARserver_ip => SERVERIP
 VARDB_server => localhost
 VARDB_database => asterisk
 VARDB_user => cron
-VARDB_pass => 1234
+VARDB_pass => 24449799
 VARDB_custom_user => custom
-VARDB_custom_pass => custom1234
+VARDB_custom_pass => custom24449799
 VARDB_port => 3306
 
 # Alpha-Numeric list of the astGUIclient processes to be kept running
@@ -490,7 +457,7 @@ perl install.pl --no-prompt
 
 
 #Install Crontab
-cat <<CRONTAB>> /root/crontab-file
+cat <<CRONTAB>> /opt/vicidial-install-scripts/crontab-file
 
 ### recording mixing/compressing/ftping scripts
 #0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_mix.pl
@@ -587,8 +554,7 @@ cat <<CRONTAB>> /root/crontab-file
 
 CRONTAB
 
-crontab /root/crontab-file
-crontab -l
+crontab /opt/vicidial-install-scripts/crontab-file
 
 #Install rc.local
 
@@ -754,8 +720,6 @@ cd mtop-*
 perl Makefile.PL
 make
 make install
-
-
 
 
 read -p 'Press Enter to Reboot: '
