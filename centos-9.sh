@@ -181,7 +181,7 @@ ldconfig
 echo "Install Dahdi"
 cd /usr/src/
 wget https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-3.2.0+3.2.0.tar.gz
-tar xzf dahdi*
+tar xzf dahdi-linux-complete-3.2.0+3.2.0.tar.gz
 cd /usr/src/dahdi-linux-complete-3.2.0+3.2.0
 
 sudo sed -i 's|(netdev, \&wc->napi, \&wctc4xxp_poll, 64);|(netdev, \&wc->napi, \&wctc4xxp_poll);|g' /usr/src/dahdi-linux-complete-3.2.0+3.2.0/linux/drivers/dahdi/wctc4xxp/base.c
