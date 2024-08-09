@@ -4,22 +4,19 @@ echo "Vicidial installation CentOS 9 with WebPhone(WebRTC/SIP.js)"
 
 export LC_ALL=C
 
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm --skip-broken
-yum -y install http://rpms.remirepo.net/enterprise/remi-release-9.rpm --skip-broken
-yum -y install yum-utils --skip-broken
-
 yum groupinstall "Development Tools" -y --allowerasing --nobest
 dnf module enable php:remi-5.6 -y
 dnf module enable mariadb:10.5 -y
 
 dnf -y install dnf-plugins-core --skip-broken
+dnf -y install yum-utils --skip-broken
 dnf config-manager --set-enabled powertools
 
-yum -y install gcc gcc-c++ --allowerasing --nobest
-yum -y install httpd httpd-devel httpd-tools --allowerasing --nobest
-yum install -y php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* --allowerasing --nobest
-yum -y install sqlite-devel --skip-broken
-
+dnf -y install gcc gcc-c++ --allowerasing --nobest
+dnf -y install httpd httpd-devel httpd-tools --allowerasing --nobest
+dnf -y install php56 php56-syspaths php56-php-mcrypt php56-php-cli php56-php-gd php56-php-curl php56-php-mysql php56-php-ldap php56-php-zip php56-php-fileinfo php56-php-opcache wget unzip make patch subversion php56-php-devel gd-devel readline-devel php56-php-mbstring php56-php-imap php56-php-odbc php56-php-pear php56-php-xml php56-php-xmlrpc curl curl-devel perl-libwww-perl ImageMagick libxml2 libxml2-devel libpcap libpcap-devel libnet ncurses ncurses-devel screen kernel* mutt glibc.i686 certbot python3-certbot-apache mod_ssl openssl-devel newt-devel kernel-devel sqlite-devel libuuid-devel sox sendmail lame-devel htop iftop perl-File-Which libss7 mariadb-devel libss7* libopen* --allowerasing --nobest
+dnf -y install sqlite-devel --skip-broken
+dnf -y install clang
 
 tee -a /etc/httpd/conf/httpd.conf <<EOF
 
@@ -146,80 +143,6 @@ systemctl enable mariadb.service
 systemctl restart httpd.service
 systemctl restart mariadb.service
 
-#Install Perl Modules
-
-echo "Install Perl"
-
-yum install -y perl-CPAN perl-YAML perl-CPAN-DistnameInfo perl-libwww-perl perl-DBI perl-DBD-MySQL perl-GD perl-Env perl-Term-ReadLine-Gnu perl-SelfLoader perl-open.noarch --skip-broken
-
-cpan -i Tk String::CRC Tk::TableMatrix Net::Address::IP::Local Term::ReadLine::Gnu XML::Twig Digest::Perl::MD5 Spreadsheet::Read Net::Address::IPv4::Local RPM::Specfile Spreadsheet::XLSX Spreadsheet::ReadSXC MD5 Digest::MD5 Digest::SHA1 Bundle::CPAN Pod::Usage Getopt::Long DBI DBD::mysql Net::Telnet Time::HiRes Net::Server Mail::Sendmail Unicode::Map Jcode Spreadsheet::WriteExcel OLE::Storage_Lite Proc::ProcessTable IO::Scalar Scalar::Util Spreadsheet::ParseExcel Archive::Zip Compress::Raw::Zlib Spreadsheet::XLSX Test::Tester Spreadsheet::ReadSXC Text::CSV Test::NoWarnings Text::CSV_PP File::Temp Text::CSV_XS Spreadsheet::Read LWP::UserAgent HTML::Entities HTML::Strip HTML::FormatText HTML::TreeBuilder Switch Time::Local Mail::POP3Client Mail::IMAPClient Mail::Message IO::Socket::SSL readline
-
-echo "Please Press ENTER for CPAN Install"
-
-yum install perl-CPAN -y --skip-broken
-yum install perl-YAML -y --skip-broken
-yum install perl-libwww-perl -y --skip-broken
-yum install perl-DBI -y --skip-broken
-yum install perl-DBD-MySQL -y --skip-broken
-yum install perl-GD -y --skip-broken
-cd /usr/bin/
-curl -LOk http://xrl.us/cpanm
-chmod +x cpanm
-cpanm -f File::HomeDir
-cpanm -f File::Which
-cpanm CPAN::Meta::Requirements
-cpanm -f CPAN
-cpanm YAML
-cpanm MD5
-cpanm Digest::MD5
-cpanm Digest::SHA1
-cpanm readline --force
-
-
-cpanm Bundle::CPAN
-cpanm DBI
-cpanm -f DBD::mysql
-cpanm XML::Twig
-cpanm Net::Telnet
-cpanm Time::HiRes
-cpanm Net::Server
-cpanm Switch
-cpanm Mail::Sendmail
-cpanm Unicode::Map
-cpanm Jcode
-cpanm Spreadsheet::WriteExcel
-cpanm OLE::Storage_Lite
-cpanm Proc::ProcessTable
-cpanm IO::Scalar
-cpanm Spreadsheet::ParseExcel
-cpanm Curses
-cpanm Getopt::Long
-cpanm Net::Domain
-cpanm Term::ReadKey
-cpanm Term::ANSIColor
-cpanm Spreadsheet::XLSX
-cpanm Spreadsheet::Read
-cpanm LWP::UserAgent
-cpanm HTML::Entities
-cpanm HTML::Strip
-cpanm HTML::FormatText
-cpanm HTML::TreeBuilder
-cpanm Time::Local
-cpanm MIME::Decoder
-cpanm Mail::POP3Client
-cpanm Mail::IMAPClient
-cpanm Mail::Message
-cpanm IO::Socket::SSL
-cpanm MIME::Base64
-cpanm MIME::QuotedPrint
-cpanm Crypt::Eksblowfish::Bcrypt
-cpanm Crypt::RC4
-cpanm Text::CSV
-cpanm Text::CSV_XS
-
-
-
-
 #Install Asterisk Perl
 cd /usr/src
 wget http://download.vicidial.com/required-apps/asterisk-perl-0.08.tar.gz
@@ -229,8 +152,8 @@ perl Makefile.PL
 make all
 make install 
 
-dnf --enablerepo=powertools install libsrtp-devel -y
-yum install -y elfutils-libelf-devel libedit-devel --allowerasing --nobest
+dnf --enablerepo=powertools -y install libsrtp-devel
+dnf -y install elfutils-libelf-devel libedit-devel --allowerasing --nobest
 
 
 #Install Lame
@@ -268,7 +191,7 @@ make -j`nproc`
 make install
 make install-config
 
-yum -y install dahdi-tools-libs --allowerasing --nobest
+dnf -y install dahdi-tools-libs --allowerasing --nobest
 
 cd tools
 make clean
@@ -723,7 +646,5 @@ make install
 
 
 read -p 'Press Enter to Reboot: '
-
 echo "Restarting CentOS"
-
 reboot
