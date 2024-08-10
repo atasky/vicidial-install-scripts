@@ -211,7 +211,7 @@ echo 'Continuing...'
 
 #Install Asterisk and LibPRI
 mkdir /usr/src/asterisk
-cd /usr/src/asterisk 
+cd /usr/src/asterisk  
 wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-1-current.tar.gz
 wget http://download.vicidial.com/required-apps/asterisk-13.29.2-vici.tar.gz
 
@@ -230,8 +230,9 @@ menuselect/menuselect --enable chan_pjsip menuselect.makeopts
 menuselect/menuselect --enable codec_g722 menuselect.makeopts
 menuselect/menuselect --enable codec_g726 menuselect.makeopts
 menuselect/menuselect --enable format_mp3 menuselect.makeopts
-menuselect/menuselect --enable app_mysql menuselect.makeopts
-menuselect/menuselect --enable cdr_mysql menuselect.makeopts
+menuselect/menuselect --enable app_skel menuselect.makeopts
+menuselect/menuselect --enable app_verbose menuselect.makeopts
+menuselect/menuselect --enable chan_rtp  menuselect.makeopts
 
 make -j 12 all
 ./contrib/scripts/install_prereq install
