@@ -211,7 +211,7 @@ echo 'Continuing...'
 
 #Install Asterisk and LibPRI
 mkdir /usr/src/asterisk
-cd /usr/src/asterisk
+cd /usr/src/asterisk 
 wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-1-current.tar.gz
 wget http://download.vicidial.com/required-apps/asterisk-13.29.2-vici.tar.gz
 
